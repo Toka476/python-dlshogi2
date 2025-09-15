@@ -18,6 +18,7 @@ parser.add_argument('--checkpoint', default='checkpoints/checkpoint-{epoch:03}.p
 parser.add_argument('--resume', '-r', default='', help='Resume from snapshot')
 parser.add_argument('--eval_interval', type=int, default=100, help='evaluation interval')
 parser.add_argument('--log', default=None, help='log file path')
+parser.add_argument('--run', default='A', help='run identifier for checkpoints (e.g., A, B, C)')
 args = parser.parse_args()
 
 logging.basicConfig(format='%(asctime)s\t%(levelname)s\t%(message)s', datefmt='%Y/%m/%d %H:%M:%S', filename=args.log, level=logging.DEBUG)
@@ -78,7 +79,7 @@ def binary_accuracy(y, t):
 
 # チェックポイント保存
 def save_checkpoint():
-    path = args.checkpoint.format(**{'epoch':epoch, 'step':t})
+    path = f"{args.checkpoint.format(epoch=epoch, step=t)}-{args.run}.pth"
     logging.info('Saving the checkpoint to {}'.format(path))
     checkpoint = {
         'epoch': epoch,
